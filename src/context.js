@@ -5,15 +5,17 @@ const Context = React.createContext();
 
 export class Provider extends Component {
     state = {
-        track_list: [
-            {track: {track_name: 'abc'} },
-            {track: {track_name: 'def'} }
-        ],
+        track_list: [],
         heading: 'Top 10 Tracks'
     }
     
     componentDidMount(){
-      
+      axios.get(`${process.env.REACT_APP_URL_BASE}.tracks.get?page=1&page_size=10&country=cz&f_has_lyrics=1&apikey=${process.env.REACT_APP_MM_KEY}`)
+        .then(res => {
+            console.log(res.data);
+            this.setState({track_list: res.data.message.body.track_list});
+        })
+        .catch(err => console.log(err));
     }
     
 
